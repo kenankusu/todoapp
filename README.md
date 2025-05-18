@@ -77,16 +77,9 @@ LocalStorage wird in diesem Projekt verwendet, um Benutzerdaten wie Zweige (Bran
 ## Verzicht auf Login
 
 Ein Login-System wurde bewusst nicht implementiert, um die Komplexität des Projekts gering zu halten. Ziel war es, eine einfache und leicht verständliche Anwendung zu erstellen, die ohne Benutzerkonten auskommt. Dies macht die Anwendung ideal für den lokalen Gebrauch oder für Benutzer, die keine sensiblen Daten speichern möchten.
-
-Ein weiterer Vorteil des Verzichts auf ein Login-System ist die **verbesserte Benutzerfreundlichkeit**. Benutzer können die Anwendung sofort nutzen, ohne sich registrieren oder anmelden zu müssen, was die Einstiegshürde senkt. 
-
-Darüber hinaus wird die **Entwicklung und Wartung vereinfacht**, da keine zusätzlichen Sicherheitsmaßnahmen wie Passwortverschlüsselung oder Authentifizierungsmechanismen implementiert werden müssen. Dies spart Entwicklungszeit und reduziert potenzielle Sicherheitsrisiken.
-
-Ein weiterer Vorteil ist die **Offline-Funktionalität**. Da keine serverseitige Authentifizierung erforderlich ist, kann die Anwendung vollständig offline genutzt werden, solange der Browser Zugriff auf LocalStorage hat.
-
-## Fazit
-
-Dieses Projekt zeigt, wie man mit Vue.js eine moderne und reaktive Anwendung erstellen kann. Die Verwendung von LocalStorage bietet eine einfache und effektive Möglichkeit, Daten zu speichern, ohne auf externe Server angewiesen zu sein. Durch den Verzicht auf ein Login-System bleibt die Anwendung einfach und benutzerfreundlich.
+Ein weiterer Vorteil des Verzichts auf ein Login-System ist die Benutzerfreundlichkeit. Benutzer können die Anwendung sofort nutzen, ohne sich registrieren, was die Einstiegshürde senkt.
+Zudem wird die Entwicklung und Wartung vereinfacht, da keine zusätzlichen Sicherheitsmaßnahmen wie Passwortverschlüsselung oder Authentifizierungsmechanismen implementiert werden müssen. Dies spart Entwicklungszeit und reduziert potenzielle Sicherheitsrisiken.
+Da keine Authentifizierung über einen Server erforderlich ist, kann die Anwendung vollständig offline genutzt werden.
 
 
 ## Projekt Demo
