@@ -179,8 +179,7 @@ export default {
     },
     completedTodos(goal) {
       return goal.todos.filter(todo => todo.completed);
-    },
-    getBranchColor(branchId) {
+    },    getBranchColor(branchId) {
       const branch = this.branches.find(b => b.id === branchId);
       return branch ? branch.color : '#ddd';
     },

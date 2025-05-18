@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      branches: JSON.parse(localStorage.getItem('branches') || '[]')
+      branches: []
     }
   },
   created() {
@@ -40,7 +40,17 @@ export default {
   },
   methods: {
     updateBranches() {
-      this.branches = JSON.parse(localStorage.getItem('branches') || '[]');
+      const storedBranches = JSON.parse(localStorage.getItem('branches') || '[]');
+      this.branches = [...storedBranches]; // Create a new array to ensure reactivity
+    }
+  },
+  watch: {
+    // Watch localStorage for changes
+    '$refs.branchManager.branches': {
+      deep: true,
+      handler() {
+        this.updateBranches();
+      }
     }
   },
   computed: {

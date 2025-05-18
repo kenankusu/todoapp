@@ -136,18 +136,24 @@ export default {
   methods: {
     createBranch() {
       if (this.isValidBranch) {
-        this.branches.push({
+        const newBranch = {
           id: Date.now(),
-          name: this.newBranch.name.trim(),
+          name: this.newBranch.name,
           color: this.newBranch.color,
           todos: [],
           newTodo: ''
-        });
-        this.newBranch = { name: '', color: '' };
-        this.showBranchForm = false;
-        this.$emit('branches-updated');
-        // Save to localStorage
+        };
+        
+        this.branches.push(newBranch);
         localStorage.setItem('branches', JSON.stringify(this.branches));
+        this.$emit('branches-updated'); // Emit the event immediately
+        
+        // Reset form
+        this.newBranch = {
+          name: '',
+          color: ''
+        };
+        this.showBranchForm = false;
       }
     },
     addTodo(branch) {
