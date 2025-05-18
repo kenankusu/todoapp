@@ -21,9 +21,9 @@ Die Entscheidung, ein Framework wie Vue.js zu verwenden, basiert auf folgenden V
 
 Die Reaktivität von Vue.js wurde in diesem Projekt genutzt, um die Benutzeroberfläche dynamisch und interaktiv zu gestalten. Ein Beispiel dafür ist die Erstellung von Zielen (Goals) basierend auf den existierenden Zweigen (Branches).
 
-- **Datenbindung**: Die Daten für Zweige und Ziele werden in der `data`-Option der Vue-Komponenten definiert. Änderungen an diesen Daten werden automatisch in der Benutzeroberfläche reflektiert.
+- **Datenbindung**: Die Daten für Zweige und Ziele werden in der data-Option der Vue-Komponenten definiert. Änderungen an diesen Daten werden automatisch in der Benutzeroberfläche dargestellt.
 
-- **Reaktive Abhängigkeiten**: Wenn ein Benutzer einen neuen Zweig erstellt oder einen bestehenden Zweig bearbeitet, werden die Ziele automatisch aktualisiert, um die Änderungen widerzuspiegeln. Dies wird durch die reaktive Natur von Vue.js ermöglicht, die sicherstellt, dass alle abhängigen Komponenten und Daten aktualisiert werden, wenn sich die zugrunde liegenden Daten ändern.
+- **Reaktive Abhängigkeiten**: Wenn ein Benutzer einen neuen Zweig erstellt oder einen bestehenden Zweig bearbeitet, werden die Ziele automatisch aktualisiert, um die Änderungen widerzuspiegeln. Vue.js stellt sicher, dass alle abhängigen Komponenten und Daten aktualisiert werden, wenn sich die zusammenhängenden liegenden Daten ändern.
 
 ```javascript
 addTodo(branch) {
@@ -39,8 +39,8 @@ addTodo(branch) {
 }
 ```
 ### Erklärung:
-1. **Reaktive Datenbindung**: Wenn ein neues Todo hinzugefügt wird, wird es direkt in der `todos`-Liste des entsprechenden Branches gespeichert. Da Vue.js reaktiv ist, wird die Benutzeroberfläche automatisch aktualisiert, um das neue Todo anzuzeigen.
-2. **Persistenz mit LocalStorage**: Nach dem Hinzufügen wird die aktualisierte Liste der Branches in LocalStorage gespeichert, um die Daten auch nach einem Neuladen der Seite verfügbar zu machen.
+- Wenn ein neues Todo hinzugefügt wird, wird es direkt in der todos-Liste des entsprechenden Branches gespeichert.
+- Nach dem Hinzufügen wird die aktualisierte Liste der Branches in LocalStorage gespeichert.
 
 ## Verwendung von LocalStorage
 
@@ -52,13 +52,14 @@ LocalStorage wird in diesem Projekt verwendet, um Benutzerdaten wie Zweige (Bran
   ```javascript
   localStorage.setItem('branches', JSON.stringify(this.branches));
   ```
-  Hier werden die Zweige als JSON-String gespeichert.
+  Hier werden die Zweige als JSON-String gespeichert. Die JSON.stringify() Methode konvertiert Werte in einen JSON-String.
 
 - **Abrufen von Daten**:
   ```javascript
   this.branches = JSON.parse(localStorage.getItem('branches') || '[]');
   ```
-  Hier werden die gespeicherten Daten abgerufen und in ein JavaScript-Objekt umgewandelt.
+  Die Methode JSON.parse() ruft eine JSON-Zeichenkette ab und erstellt daraus ein JavaScript-Objekt. Hier werden die gespeicherten Daten abgerufen und in ein JavaScript-Objekt umgewandelt.
+  
 ### Nachteile von LocalStorage
 
 1. **Größenbeschränkung**: Der LocalStorage des Browsers hat eine Speichergrenze von etwa 5 MB pro Domain, was für größere Datenmengen unzureichend sein kann, für dieses Projekt jedoch vollkommen ausreicht.
@@ -70,12 +71,18 @@ LocalStorage wird in diesem Projekt verwendet, um Benutzerdaten wie Zweige (Bran
 1. **Persistenz**: Daten bleiben auch nach dem Schließen des Browsers erhalten.
 2. **Einfachheit**: Die `localStorage`-API erfordert keine zusätzlichen Bibliotheken.
 3. **Keine Serverabhängigkeit**: Da die Daten lokal gespeichert werden ist kein Server erforderlich. Dies vereinfacht die Anwendung und macht sie sehr unabhängig.
-4. **Datenschutz**: Im Gegensatz zu Cookies werden die Daten nicht automatisch an keinen Server gesendet. Nur der Nutzer speichert seine Daten.
+4. **Datenschutz**: Im Gegensatz zu Cookies werden die Daten an keinen Server gesendet. Der Nutzer speichert seine Daten lokal.
 
    
 ## Verzicht auf Login
 
-Ein Login-System wurde bewusst nicht implementiert, um die Komplexität des Projekts gering zu halten. Ziel war es, eine einfache und leicht verständliche Anwendung zu erstellen, die ohne Benutzerkonten auskommt. Dies macht die Anwendung ideal für den lokalen Gebrauch oder für Benutzer, die keine allzu sensiblen Daten speichern möchten.
+Ein Login-System wurde bewusst nicht implementiert, um die Komplexität des Projekts gering zu halten. Ziel war es, eine einfache und leicht verständliche Anwendung zu erstellen, die ohne Benutzerkonten auskommt. Dies macht die Anwendung ideal für den lokalen Gebrauch oder für Benutzer, die keine sensiblen Daten speichern möchten.
+
+Ein weiterer Vorteil des Verzichts auf ein Login-System ist die **verbesserte Benutzerfreundlichkeit**. Benutzer können die Anwendung sofort nutzen, ohne sich registrieren oder anmelden zu müssen, was die Einstiegshürde senkt. 
+
+Darüber hinaus wird die **Entwicklung und Wartung vereinfacht**, da keine zusätzlichen Sicherheitsmaßnahmen wie Passwortverschlüsselung oder Authentifizierungsmechanismen implementiert werden müssen. Dies spart Entwicklungszeit und reduziert potenzielle Sicherheitsrisiken.
+
+Ein weiterer Vorteil ist die **Offline-Funktionalität**. Da keine serverseitige Authentifizierung erforderlich ist, kann die Anwendung vollständig offline genutzt werden, solange der Browser Zugriff auf LocalStorage hat.
 
 ## Fazit
 
