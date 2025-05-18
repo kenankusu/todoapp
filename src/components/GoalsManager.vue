@@ -33,17 +33,17 @@
       <div 
         v-for="goal in goals" 
         :key="goal.id"
-        class="goal-box"
+        class="content-box"
         :style="{ backgroundColor: getBranchColor(goal.branchId) }"
       >
-        <div class="goal-header">
+        <div class="content-box-header">
           <h3>{{ getBranchName(goal.branchId) }}</h3>
-          <button class="delete-goal-button" @click="deleteGoal(goal.id)">&times;</button>
+          <button class="content-box-delete" @click="deleteGoal(goal.id)">&times;</button>
         </div>
-        <div class="todos-container">
+        <div class="content-items">
           <!-- Active Todos -->
-          <div v-for="todo in activeTodos(goal)" :key="todo.id" class="todo-item">
-            <div class="todo-content">
+          <div v-for="todo in activeTodos(goal)" :key="todo.id" class="content-item">
+            <div class="content-item-text">
               <input 
                 type="checkbox" 
                 :checked="todo.completed"
@@ -52,13 +52,13 @@
               />
               <span>{{ todo.text }}</span>
             </div>
-            <button class="delete-todo" @click="deleteTodo(goal.id, todo.id)">&times;</button>
+            <button class="content-item-delete" @click="deleteTodo(goal.id, todo.id)">&times;</button>
           </div>
 
           <!-- Completed Todos -->
           <div v-if="completedTodos(goal).length > 0" class="completed-todos-section">
-            <div v-for="todo in completedTodos(goal)" :key="todo.id" class="todo-item completed">
-              <div class="todo-content">
+            <div v-for="todo in completedTodos(goal)" :key="todo.id" class="content-item completed">
+              <div class="content-item-text">
                 <input 
                   type="checkbox" 
                   :checked="todo.completed"
@@ -67,19 +67,19 @@
                 />
                 <span>{{ todo.text }}</span>
               </div>
-              <button class="delete-todo" @click="deleteTodo(goal.id, todo.id)">&times;</button>
+              <button class="content-item-delete" @click="deleteTodo(goal.id, todo.id)">&times;</button>
             </div>
           </div>
         </div>
-        <div class="add-todo-container">
+        <div class="content-add">
           <input 
             v-model="goal.newTodo" 
             placeholder="Neues Todo hinzufügen..."
             @keyup.enter="addTodo(goal)"
-            class="todo-input"
+            class="content-add-input"
           />
           <button 
-            class="add-todo-button"
+            class="content-add-button"
             @click="addTodo(goal)"
             :disabled="!goal.newTodo?.trim()"
           >
@@ -108,6 +108,10 @@ export default {
       goals: []
     }
   },
+  created() {
+    // Load goals from localStorage on component mount
+    this.goals = JSON.parse(localStorage.getItem('goals') || '[]');
+  },
   methods: {
     handleBranchSelect() {
       if (this.selectedBranchId) {
@@ -118,12 +122,17 @@ export default {
           newTodo: ''
         });
         
+        // Save to localStorage
+        localStorage.setItem('goals', JSON.stringify(this.goals));
+        
         this.showGoalForm = false;
         this.selectedBranchId = '';
       }
     },
     deleteGoal(goalId) {
       this.goals = this.goals.filter(g => g.id !== goalId);
+      // Save to localStorage
+      localStorage.setItem('goals', JSON.stringify(this.goals));
     },
     addTodo(goal) {
       if (goal.newTodo?.trim()) {
@@ -133,12 +142,16 @@ export default {
           completed: false
         });
         goal.newTodo = '';
+        // Save to localStorage
+        localStorage.setItem('goals', JSON.stringify(this.goals));
       }
     },
     deleteTodo(goalId, todoId) {
       const goal = this.goals.find(g => g.id === goalId);
       if (goal) {
         goal.todos = goal.todos.filter(todo => todo.id !== todoId);
+        // Save to localStorage
+        localStorage.setItem('goals', JSON.stringify(this.goals));
       }
     },
     toggleTodo(goalId, todoId) {
@@ -156,6 +169,8 @@ export default {
               completed: false
             });
           }
+          // Save to localStorage
+          localStorage.setItem('goals', JSON.stringify(this.goals));
         }
       }
     },
@@ -265,53 +280,59 @@ export default {
   gap: 1rem;
 }
 
-.goal-box {
-  padding: 1.5rem;
-  border-radius: 8px;
-  width: 100%;
+.completed-todos-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.goal-header {
+.content-box {
+  padding: 1.5rem;
+  border-radius: 8px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: auto;
+  transition: transform 0.2s;
+}
+
+.content-box:hover {
+  transform: scale(1.01);
+}
+
+.content-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
   margin-bottom: 1rem;
 }
 
-.goal-header h3 {
-  margin: 0;
-  color: rgba(0, 0, 0, 0.8);
+.content-items:empty {
+  margin-bottom: 0;
 }
 
-.todos-container {
-  margin-top: 1rem;
-}
-
-.todo-item {
+.content-item {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem;
+  border-radius: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
 }
 
-.todo-item.completed {
+.content-item.completed {
   opacity: 0.7;
 }
 
-.todo-content {
+.content-item-text {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-grow: 1;
 }
 
-.todo-checkbox {
-  cursor: pointer;
-}
-
-.delete-todo {
+.content-item-delete {
   background: none;
   border: none;
   color: rgba(0, 0, 0, 0.5);
@@ -320,38 +341,36 @@ export default {
   padding: 0.2rem 0.5rem;
 }
 
-.delete-goal-button {
-  background: none;
-  border: none;
-  color: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-.add-todo-container {
-  margin-top: 1rem;
+.content-add {
+  margin-top: auto;
   display: flex;
   gap: 0.5rem;
 }
 
-.todo-input {
-  flex: 1;
+.content-add-input {
+  flex-grow: 1;
   padding: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.add-todo-button {
-  padding: 0.5rem 1rem;
-  background-color: rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
-.add-todo-button:disabled {
+.content-add-button {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 4px;
+  width: 2rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.content-add-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.todo-checkbox {
+  cursor: pointer;
 }
 </style>

@@ -46,17 +46,17 @@
       <div 
         v-for="branch in branches" 
         :key="branch.id"
-        class="branch-box"
+        class="content-box"
         :style="{ backgroundColor: branch.color }"
       >
-        <div class="branch-header">
+        <div class="content-box-header">
           <h3>{{ branch.name }}</h3>
-          <button class="delete-branch-button" @click="deleteBranch(branch.id)">&times;</button>
+          <button class="content-box-delete" @click="deleteBranch(branch.id)">&times;</button>
         </div>
-        <div class="todos-container">
+        <div class="content-items">
           <!-- Active Todos -->
-          <div v-for="todo in activeTodos(branch)" :key="todo.id" class="todo-item">
-            <div class="todo-content">
+          <div v-for="todo in activeTodos(branch)" :key="todo.id" class="content-item">
+            <div class="content-item-text">
               <input 
                 type="checkbox" 
                 :checked="todo.completed"
@@ -65,13 +65,13 @@
               />
               <span>{{ todo.text }}</span>
             </div>
-            <button class="delete-todo" @click="deleteTodo(branch.id, todo.id)">&times;</button>
+            <button class="content-item-delete" @click="deleteTodo(branch.id, todo.id)">&times;</button>
           </div>
 
           <!-- Completed Todos -->
           <div v-if="completedTodos(branch).length > 0" class="completed-todos-section">
-            <div v-for="todo in completedTodos(branch)" :key="todo.id" class="todo-item completed">
-              <div class="todo-content">
+            <div v-for="todo in completedTodos(branch)" :key="todo.id" class="content-item completed">
+              <div class="content-item-text">
                 <input 
                   type="checkbox" 
                   :checked="todo.completed"
@@ -80,19 +80,19 @@
                 />
                 <span>{{ todo.text }}</span>
               </div>
-              <button class="delete-todo" @click="deleteTodo(branch.id, todo.id)">&times;</button>
+              <button class="content-item-delete" @click="deleteTodo(branch.id, todo.id)">&times;</button>
             </div>
           </div>
         </div>
-        <div class="add-todo-container">
+        <div class="content-add">
           <input 
             v-model="branch.newTodo" 
             placeholder="Neues Todo hinzufügen..."
             @keyup.enter="addTodo(branch)"
-            class="todo-input"
+            class="content-add-input"
           />
           <button 
-            class="add-todo-button"
+            class="content-add-button"
             @click="addTodo(branch)"
             :disabled="!branch.newTodo?.trim()"
           >
@@ -208,40 +208,11 @@ export default {
   padding: 0 2rem 2rem 2rem;
 }
 
-.add-button {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+.branches-container {
+  margin-top: 2rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -5rem;
-  right: 2rem;
-}
-
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .form-group {
@@ -295,123 +266,13 @@ export default {
   cursor: not-allowed;
 }
 
-.branches-container {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.branch-box {
-  padding: 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: auto;
-}
-
-.branch-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.branch-header h3 {
-  margin: 0;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.delete-branch-button {
-  opacity: 0;
-  background: none;
-  border: none;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  transition: opacity 0.2s, background-color 0.2s;
-}
-
-.branch-box:hover .delete-branch-button {
-  opacity: 1;
-}
-
-.delete-branch-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.todos-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-height: 0;
-  margin-bottom: 1rem;
-}
-
-.todos-container:empty {
-  margin-bottom: 0;
-}
-
-.todo-item {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 0.5rem;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.todo-content {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-grow: 1;
-}
-
 .completed-todos-section {
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.todo-item.completed .todo-content span {
-  text-decoration: line-through;
-  color: #666;
-}
-
-.delete-todo {
-  background: none;
-  border: none;
-  color: #666;
+.todo-checkbox {
   cursor: pointer;
-  font-size: 1.2rem;
-  padding: 0 0.3rem;
-}
-
-.add-todo-container {
-  margin-top: auto;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.todo-input {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.9);
-}
-
-.add-todo-button {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 4px;
-  width: 2rem;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #666;
 }
 </style>
